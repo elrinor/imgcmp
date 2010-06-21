@@ -36,6 +36,8 @@ type
     Img:array[0..Base-1,0..Base-1,1..3]of Integer;
     MidColor:array[1..3]of Integer;
     FileSize:LongInt;
+    Crop:array[0..3]of Single; {0-up 1-down 2-left 3-right}
+    CropValue:Byte;
   end;
   PResizedImage = ^TResizedImage;
   TBigByteArray=Array[0..100000000]of byte;

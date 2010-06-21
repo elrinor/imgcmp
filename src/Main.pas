@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, Buttons, CheckLst, FileCtrl, ComCtrls, Spin, Gauges, ExtCtrls,
   Support, Options, CoolTrayIcon, TextTrayIcon, Globals, Utils, DBase, Math,
-  FileUtil, ImgList;
+  FileUtil, ImgList, OptionsControl;
 
 type
   TForm1 = class(TForm)
@@ -24,14 +24,6 @@ type
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
-    TabSheet2: TTabSheet;
-    GroupBox1: TGroupBox;
-    BitBtn4: TBitBtn;
-    Label5: TLabel;
-    CheckBox1: TCheckBox;
-    GroupBox2: TGroupBox;
-    Label7: TLabel;
-    SpinEdit1: TSpinEdit;
     TabSheet3: TTabSheet;
     GroupBox3: TGroupBox;
     GroupBox4: TGroupBox;
@@ -70,38 +62,10 @@ type
     ListBox1: TListBox;
     BitBtn7: TBitBtn;
     BitBtn8: TBitBtn;
-    Label26: TLabel;
-    Label27: TLabel;
-    SpinEdit2: TSpinEdit;
-    Label28: TLabel;
-    Label29: TLabel;
-    GroupBox8: TGroupBox;
-    Label30: TLabel;
-    SpinEdit3: TSpinEdit;
-    Label31: TLabel;
-    CheckBox2: TCheckBox;
-    Label32: TLabel;
-    Label33: TLabel;
-    Label34: TLabel;
     BitBtn9: TBitBtn;
     TextTrayIcon1: TTextTrayIcon;
     OpenDialog1: TOpenDialog;
     SaveDialog1: TSaveDialog;
-    GroupBox9: TGroupBox;
-    RadioGroup1: TRadioGroup;
-    RadioGroup2: TRadioGroup;
-    GroupBox10: TGroupBox;
-    TrackBar1: TTrackBar;
-    Label35: TLabel;
-    Label36: TLabel;
-    Label37: TLabel;
-    Label38: TLabel;
-    GroupBox11: TGroupBox;
-    Label39: TLabel;
-    BitBtn10: TBitBtn;
-    Gauge5: TGauge;
-    Label40: TLabel;
-    Label41: TLabel;
     GroupBox12: TGroupBox;
     BitBtn11: TBitBtn;
     Label42: TLabel;
@@ -112,6 +76,52 @@ type
     Image3: TImage;
     Label44: TLabel;
     Label45: TLabel;
+    TabSheet6: TTabSheet;
+    PageControl2: TPageControl;
+    TabSheet7: TTabSheet;
+    TabSheet8: TTabSheet;
+    TabSheet9: TTabSheet;
+    TabSheet10: TTabSheet;
+    TabSheet11: TTabSheet;
+    ListBox2: TListBox;
+    Panel2: TPanel;
+    BitBtn12: TBitBtn;
+    CheckBox3: TCheckBox;
+    Label46: TLabel;
+    Label47: TLabel;
+    Label48: TLabel;
+    CheckBox4: TCheckBox;
+    Label49: TLabel;
+    SpinEdit4: TSpinEdit;
+    Label50: TLabel;
+    Label51: TLabel;
+    Label52: TLabel;
+    BitBtn13: TBitBtn;
+    Label53: TLabel;
+    Gauge6: TGauge;
+    Label54: TLabel;
+    Label55: TLabel;
+    SpinEdit5: TSpinEdit;
+    Label56: TLabel;
+    Label57: TLabel;
+    SpinEdit6: TSpinEdit;
+    Label58: TLabel;
+    GroupBox13: TGroupBox;
+    Label59: TLabel;
+    Label60: TLabel;
+    Label61: TLabel;
+    Label62: TLabel;
+    TrackBar2: TTrackBar;
+    RadioGroup3: TRadioGroup;
+    RadioGroup4: TRadioGroup;
+    CheckBox1: TCheckBox;
+    Label5: TLabel;
+    Label7: TLabel;
+    Label26: TLabel;
+    ComboBox1: TComboBox;
+    Label27: TLabel;
+    BitBtn4: TBitBtn;
+    Label28: TLabel;
     procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
@@ -127,7 +137,7 @@ type
       Shift: TShiftState);
     procedure CheckListBox3KeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
-    procedure BitBtn4Click(Sender: TObject);
+    procedure BitBtn12Click(Sender: TObject);
     procedure SpinEdit1Exit(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure SpinEdit2Exit(Sender: TObject);
@@ -145,16 +155,22 @@ type
     procedure TextTrayIcon1DblClick(Sender: TObject);
     procedure BitBtn7Click(Sender: TObject);
     procedure BitBtn8Click(Sender: TObject);
-    procedure CheckBox1Click(Sender: TObject);
+    procedure CheckBox3Click(Sender: TObject);
     procedure SpinEdit1Change(Sender: TObject);
     procedure SpinEdit2Change(Sender: TObject);
-    procedure CheckBox2Click(Sender: TObject);
+    procedure CheckBox4Click(Sender: TObject);
     procedure SpinEdit3Change(Sender: TObject);
     procedure RadioGroup1Click(Sender: TObject);
     procedure RadioGroup2Click(Sender: TObject);
     procedure TrackBar1Change(Sender: TObject);
     procedure BitBtn10Click(Sender: TObject);
     procedure BitBtn11Click(Sender: TObject);
+    procedure ListBox2MouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure ListBox2KeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CheckBox1Click(Sender: TObject);
+    procedure BitBtn4Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -165,8 +181,25 @@ var
   Form1: TForm1;
 
 implementation
+procedure ChangeOptions(Index: Integer); forward;
 
 {$R *.DFM}
+
+//============================================================================\\
+// ProcessPriority
+//============================================================================\\
+Procedure ChangePriority(const NewPriority:Integer);
+const Priorities:array[0..2]of String=('IDLE','NORMAL','HIGH');
+begin;
+case NewPriority of
+  0:SetPriorityClass(GetCurrentProcess,IDLE_PRIORITY_CLASS);
+  1:SetPriorityClass(GetCurrentProcess,NORMAL_PRIORITY_CLASS);
+  2:SetPriorityClass(GetCurrentProcess,HIGH_PRIORITY_CLASS);
+end;
+Form1.ComboBox1.ItemIndex:=NewPriority;
+Form1.Label27.Caption:='Current Priority: '+Priorities[NewPriority];
+end;
+
 
 //============================================================================\\
 // DBSize
@@ -181,7 +214,7 @@ Size1:=GetFileSize(ExtractFilePath(Application.ExeName)+'Data\DBase.idb');
 if Size1>-1 then DBSize:=DBSize+Size1;
 Size1:=GetFileSize(ExtractFilePath(Application.ExeName)+'Data\DBase.lst');
 if Size1>-1 then DBSize:=DBSize+Size1;
-Form1.Label41.Caption:='DataBase Size: '+FileSizeToStr(DBSize);
+Form1.Label54.Caption:='DataBase Size: '+FileSizeToStr(DBSize);
 end;
 
 
@@ -284,15 +317,22 @@ end;
 //============================================================================\\
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-SetPriorityClass(GetCurrentProcess,IDLE_PRIORITY_CLASS);
-Form1.Label5.Caption:=Garbage;
-Form1.Label5.Hint:=Form1.Label5.Caption;
-Form1.CheckBox1.Checked:=AllowGarbage;
-Form1.SpinEdit1.Value:=Difference;
-Form1.SpinEdit2.Value:=Round((HWMlp-1)*100);
+LoadDirList(CheckListBox1,'Scanned Folders');
+LoadDirList(CheckListBox2,'New Folders');
+LoadDirList(CheckListBox3,'Exclude Folders');
+ChangePriority(ProcessPriority);
+Form1.PageControl1.ActivePageIndex:=0;
+Form1.Label47.Caption:=Garbage;
+Form1.Label47.Hint:=Form1.Label47.Caption;
+Form1.CheckBox3.Checked:=AllowGarbage;
+Form1.SpinEdit5.Value:=Difference;
+Form1.SpinEdit6.Value:=Round((HWMlp-1)*100);
 Form1.DirectoryListBox1.Directory:=DefDir;
-Form1.CheckBox2.Checked:=AllowAutoSaving;
-Form1.SpinEdit3.Value:=AutoSaveInterval;
+Form1.CheckBox4.Checked:=AllowAutoSaving;
+Form1.SpinEdit4.Value:=AutoSaveInterval;
+Form1.CheckBox1.Checked:=CutFields;
+//Form1.ListBox2.Selected[OptionsListPosition]:=True;
+ChangeOptions(OptionsListPosition);
 GlobalMemo:=Form1.Memo1;
 GlobalLabel:=Form1.Label9;
 GlobalSetCaption:=@SetCaption;
@@ -302,114 +342,128 @@ Form1.SaveDialog1.Filter:='Results files (*'+ResultsExt+')|*'+ResultsExt;
 Form1.SaveDialog1.InitialDir:=ExtractFilePath(Application.ExeName);
 Form1.OpenDialog1.InitialDir:=ExtractFilePath(Application.ExeName);
 if FileSizeIsGood then
-  Form1.RadioGroup1.ItemIndex:=0
+  Form1.RadioGroup4.ItemIndex:=0
 else
-  Form1.RadioGroup1.ItemIndex:=1;
+  Form1.RadioGroup4.ItemIndex:=1;
 if ResolutionIsGood then
-  Form1.RadioGroup2.ItemIndex:=0
+  Form1.RadioGroup3.ItemIndex:=0
 else
-  Form1.RadioGroup2.ItemIndex:=1;
-Form1.TrackBar1.Position:=ResolutionEffectOnRating;
+  Form1.RadioGroup3.ItemIndex:=1;
+Form1.TrackBar2.Position:=ResolutionEffectOnRating;
 UpdateDBSize;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-Garbage:=Form1.Label5.Caption;
-AllowGarbage:=Form1.CheckBox1.Checked;
-Difference:=Form1.SpinEdit1.Value;
-HWMlp:=Form1.SpinEdit2.Value/100+1;
+Garbage:=Form1.Label47.Caption;
+AllowGarbage:=Form1.CheckBox3.Checked;
+Difference:=Form1.SpinEdit5.Value;
+HWMlp:=Form1.SpinEdit6.Value/100+1;
 DefDir:=Form1.DirectoryListBox1.Directory;
-AllowAutoSaving:=Form1.CheckBox2.Checked;
-AutoSaveInterval:=Form1.SpinEdit3.Value;
+AllowAutoSaving:=Form1.CheckBox4.Checked;
+AutoSaveInterval:=Form1.SpinEdit4.Value;
+SaveDirList(CheckListBox1,'Scanned Folders');
+SaveDirList(CheckListBox2,'New Folders');
+SaveDirList(CheckListBox3,'Exclude Folders');
 end;
 
 
 //============================================================================\\
 // Options
 //============================================================================\\
-procedure TForm1.BitBtn4Click(Sender: TObject);
+procedure TForm1.BitBtn12Click(Sender: TObject);
 var Dir:String;
 begin
 if SelectDirectory('Garbage...','',Dir) then
   begin;
-  Form1.Label5.Hint:=Dir;
-  Form1.Label5.Caption:=Dir;
-  Garbage:=Form1.Label5.Caption;
+  Form1.Label47.Hint:=Dir;
+  Form1.Label47.Caption:=Dir;
+  Garbage:=Form1.Label47.Caption;
   end;
 end;
 
 procedure TForm1.SpinEdit1Exit(Sender: TObject);
 begin
-if Form1.SpinEdit1.Text='' then Form1.SpinEdit1.Text:='0';
+if Form1.SpinEdit5.Text='' then Form1.SpinEdit5.Text:='0';
 end;
 
 procedure TForm1.SpinEdit2Exit(Sender: TObject);
 begin
-if Form1.SpinEdit2.Text='' then Form1.SpinEdit2.Text:='0';
+if Form1.SpinEdit6.Text='' then Form1.SpinEdit6.Text:='0';
 end;
 
 procedure TForm1.SpinEdit3Exit(Sender: TObject);
 begin
-if Form1.SpinEdit3.Text='' then Form1.SpinEdit3.Text:='0';
+if Form1.SpinEdit4.Text='' then Form1.SpinEdit4.Text:='0';
 end;
 
 procedure UpdateOptions;
 begin;
-Garbage:=Form1.Label5.Caption;
-AllowGarbage:=Form1.CheckBox1.Checked;
-Difference:=Form1.SpinEdit1.Value;
-HWMlp:=Form1.SpinEdit2.Value/100+1;
+Garbage:=Form1.Label47.Caption;
+AllowGarbage:=Form1.CheckBox3.Checked;
+Difference:=Form1.SpinEdit5.Value;
+HWMlp:=Form1.SpinEdit6.Value/100+1;
 DefDir:=Form1.DirectoryListBox1.Directory;
-AllowAutoSaving:=Form1.CheckBox2.Checked;
-AutoSaveInterval:=Form1.SpinEdit3.Value;
+AllowAutoSaving:=Form1.CheckBox4.Checked;
+AutoSaveInterval:=Form1.SpinEdit4.Value;
 end;
 
-procedure TForm1.CheckBox1Click(Sender: TObject);
+procedure TForm1.CheckBox3Click(Sender: TObject);
 begin
-AllowGarbage:=Form1.CheckBox1.Checked;
+AllowGarbage:=Form1.CheckBox3.Checked;
 end;
 
 procedure TForm1.SpinEdit1Change(Sender: TObject);
 begin
-Difference:=Form1.SpinEdit1.Value;
+Difference:=Form1.SpinEdit5.Value;
 if Difference>MaxDifference then
   begin;
-  Form1.SpinEdit1.Value:=MaxDifference;
+  Form1.SpinEdit5.Value:=MaxDifference;
   Difference:=MaxDifference;
   end;
 end;
 
 procedure TForm1.SpinEdit2Change(Sender: TObject);
 begin
-HWMlp:=Form1.SpinEdit2.Value/100+1;
+HWMlp:=Form1.SpinEdit6.Value/100+1;
 end;
 
-procedure TForm1.CheckBox2Click(Sender: TObject);
+procedure TForm1.CheckBox4Click(Sender: TObject);
 begin
-AllowAutoSaving:=Form1.CheckBox2.Checked;
+AllowAutoSaving:=Form1.CheckBox4.Checked;
 end;
 
 procedure TForm1.SpinEdit3Change(Sender: TObject);
 begin
-AutoSaveInterval:=Form1.SpinEdit3.Value;
+AutoSaveInterval:=Form1.SpinEdit4.Value;
 end;
 
 procedure TForm1.RadioGroup1Click(Sender: TObject);
 begin
-if Form1.RadioGroup1.ItemIndex=0 then FileSizeIsGood:=True
+if Form1.RadioGroup4.ItemIndex=0 then FileSizeIsGood:=True
 else FileSizeIsGood:=False;
 end;
 
 procedure TForm1.RadioGroup2Click(Sender: TObject);
 begin
-if Form1.RadioGroup2.ItemIndex=0 then ResolutionIsGood:=True
+if Form1.RadioGroup3.ItemIndex=0 then ResolutionIsGood:=True
 else ResolutionIsGood:=False;
 end;
 
 procedure TForm1.TrackBar1Change(Sender: TObject);
 begin
-ResolutionEffectOnRating:=Form1.TrackBar1.Position;
+ResolutionEffectOnRating:=Form1.TrackBar2.Position;
+end;
+
+procedure TForm1.CheckBox1Click(Sender: TObject);
+begin
+CutFields:=CheckBox1.Checked;
+end;
+
+procedure TForm1.BitBtn4Click(Sender: TObject);
+begin
+ProcessPriority:=Form1.ComboBox1.ItemIndex;
+ChangePriority(ProcessPriority);
 end;
 
 
@@ -453,9 +507,24 @@ else
     w:=min(Bmp.Width,Round(Bmp.Width*min(Form1.Image1.Height/Bmp.Height, Form1.Image1.Width/Bmp.Width)));
     Form1.Image1.Canvas.StretchDraw(Rect((Form1.Image1.Width-w)div 2, (Form1.Image1.Height-h)div 2, (Form1.Image1.Width-w)div 2+w, (Form1.Image1.Height-h)div 2+h),Bmp);
     Bmp.Free;
+    If CutFields then
+      begin;
+      If PResizedImage(Images[PEqualPair(Equals[n])[1]]).MidColor[1]+
+         PResizedImage(Images[PEqualPair(Equals[n])[1]]).MidColor[2]+
+         PResizedImage(Images[PEqualPair(Equals[n])[1]]).MidColor[3]<384 then
+        Form1.Image1.Canvas.Brush.Color:=clWhite
+      else
+        Form1.Image1.Canvas.Brush.Color:=clBlack;
+      Form1.Image1.Canvas.FrameRect(Rect(
+      (Form1.Image1.Width -w)div 2+Round(PResizedImage(Images[PEqualPair(Equals[n])[1]]).Crop[2]*w),
+      (Form1.Image1.Height-h)div 2+Round(PResizedImage(Images[PEqualPair(Equals[n])[1]]).Crop[0]*h),
+      (Form1.Image1.Width -w)div 2+Round(PResizedImage(Images[PEqualPair(Equals[n])[1]]).Crop[3]*w),
+      (Form1.Image1.Height-h)div 2+Round(PResizedImage(Images[PEqualPair(Equals[n])[1]]).Crop[1]*h)));
+      end;
   except
     on E:Exception do
       begin;
+      Form1.Image1.Canvas.Brush.Color:=clBtnFace;      
       w:=Form1.Image1.Canvas.TextExtent('Preview not available').cx;
       h:=Form1.Image1.Canvas.TextExtent('Preview not available').cy;
       Form1.Image1.Canvas.TextOut(Form1.Image1.Width div 2-w div 2,Form1.Image1.Height div 2-h div 2,'Preview not available');
@@ -475,9 +544,24 @@ else
     w:=min(Bmp.Width,Round(Bmp.Width*min(Form1.Image2.Height/Bmp.Height, Form1.Image2.Width/Bmp.Width)));
     Form1.Image2.Canvas.StretchDraw(Rect((Form1.Image2.Width-w)div 2, (Form1.Image2.Height-h)div 2, (Form1.Image2.Width-w)div 2+w, (Form1.Image2.Height-h)div 2+h),Bmp);
     Bmp.Free;
+    If CutFields then
+      begin;
+      If PResizedImage(Images[PEqualPair(Equals[n])[2]]).MidColor[1]+
+         PResizedImage(Images[PEqualPair(Equals[n])[2]]).MidColor[2]+
+         PResizedImage(Images[PEqualPair(Equals[n])[2]]).MidColor[3]<384 then
+        Form1.Image2.Canvas.Brush.Color:=clWhite
+      else
+        Form1.Image2.Canvas.Brush.Color:=clBlack;
+      Form1.Image2.Canvas.FrameRect(Rect(
+      (Form1.Image2.Width -w)div 2+Round(PResizedImage(Images[PEqualPair(Equals[n])[2]]).Crop[2]*w),
+      (Form1.Image2.Height-h)div 2+Round(PResizedImage(Images[PEqualPair(Equals[n])[2]]).Crop[0]*h),
+      (Form1.Image2.Width -w)div 2+Round(PResizedImage(Images[PEqualPair(Equals[n])[2]]).Crop[3]*w),
+      (Form1.Image2.Height-h)div 2+Round(PResizedImage(Images[PEqualPair(Equals[n])[2]]).Crop[1]*h)));
+      end;
   except
     on E:Exception do
       begin;
+      Form1.Image2.Canvas.Brush.Color:=clBtnFace;
       w:=Form1.Image2.Canvas.TextExtent('Preview not available').cx;
       h:=Form1.Image2.Canvas.TextExtent('Preview not available').cy;
       Form1.Image2.Canvas.TextOut(Form1.Image2.Width div 2-w div 2,Form1.Image2.Height div 2-h div 2,'Preview not available');
@@ -695,7 +779,7 @@ begin
   Form1.Gauge3.Progress:=0;
   Form1.Gauge4.Progress:=0;
   Form1.TabSheet1.Enabled:=False;
-  Form1.TabSheet2.Enabled:=False;
+  Form1.TabSheet6.Enabled:=False;
   Form1.TabSheet4.Enabled:=False;
 
   Equals:=TList.Create;
@@ -836,7 +920,7 @@ begin
 
   UpdateDBSize;
   Form1.TabSheet1.Enabled:=True;
-  Form1.TabSheet2.Enabled:=True;
+  Form1.TabSheet6.Enabled:=True;
   Form1.TabSheet4.Enabled:=True;
   Form1.BitBtn9.Enabled:=True;
   Form1.PageControl1.ActivePageIndex:=3;
@@ -901,7 +985,7 @@ if Form1.OpenDialog1.Execute then
     Form1.Gauge3.Progress:=0;
     Form1.Gauge4.Progress:=0;
     Form1.TabSheet1.Enabled:=False;
-    Form1.TabSheet2.Enabled:=False;
+    Form1.TabSheet6.Enabled:=False;
     Form1.TabSheet4.Enabled:=False;
     Form1.PageControl1.ActivePageIndex:=2;
 
@@ -945,7 +1029,7 @@ if Form1.OpenDialog1.Execute then
 
     UpdateDBSize;
     Form1.TabSheet1.Enabled:=True;
-    Form1.TabSheet2.Enabled:=True;
+    Form1.TabSheet6.Enabled:=True;
     Form1.TabSheet4.Enabled:=True;
     Form1.BitBtn9.Enabled:=True;
     Form1.PageControl1.ActivePageIndex:=3;
@@ -962,16 +1046,16 @@ begin
   Form1.TabSheet1.Enabled:=False;
   Form1.TabSheet3.Enabled:=False;
   Form1.TabSheet4.Enabled:=False;
-  Form1.BitBtn10.Enabled:=False;
-  Form1.Gauge5.Progress:=0;
-  GlobalGauge:=Form1.Gauge5;
+  Form1.BitBtn13.Enabled:=False;
+  Form1.Gauge6.Progress:=0;
+  GlobalGauge:=Form1.Gauge6;
   OptimizeDataBase;
   UpdateDBSize;
-  Form1.Gauge5.Progress:=0;
+  Form1.Gauge6.Progress:=0;
   Form1.TabSheet1.Enabled:=True;
   Form1.TabSheet3.Enabled:=True;
   Form1.TabSheet4.Enabled:=True;
-  Form1.BitBtn10.Enabled:=True;
+  Form1.BitBtn13.Enabled:=True;
   Form1.PageControl1.ActivePageIndex:=1;
 end;
 
@@ -985,7 +1069,7 @@ If MessageDlg('Are you sure want to automatically process the list of similar im
   begin;
   DisplayResults(-1);
   Form1.TabSheet1.Enabled:=False;
-  Form1.TabSheet2.Enabled:=False;
+  Form1.TabSheet6.Enabled:=False;
   Form1.TabSheet3.Enabled:=False;
   Form1.TabSheet4.Enabled:=False;
   for i:=Form1.ListBox1.Items.Count-1 downto 0 do
@@ -995,12 +1079,46 @@ If MessageDlg('Are you sure want to automatically process the list of similar im
     Application.ProcessMessages;
     end;
   Form1.TabSheet1.Enabled:=True;
-  Form1.TabSheet2.Enabled:=True;
+  Form1.TabSheet6.Enabled:=True;
   Form1.TabSheet3.Enabled:=True;
   Form1.TabSheet4.Enabled:=True;
   Form1.PageControl1.ActivePageIndex:=3;
   end;
 end;
+
+
+//============================================================================\\
+// New Options
+//============================================================================\\
+procedure ChangeOptions(Index: Integer);
+begin;
+OptionsListPosition:=Index;
+Form1.Label5.Caption:=Form1.ListBox2.Items[Index];
+Form1.PageControl2.ActivePageIndex:=Index;
+end;
+
+procedure TForm1.ListBox2MouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+var
+  APoint: TPoint;
+  Index: integer;
+begin
+if Button = mbLeft then
+  begin
+  APoint.X := X;
+  APoint.Y := Y;
+  Index:=ListBox2.ItemAtPos(APoint, True);
+  if (Index>=0)and(Index<=Form1.ListBox2.Items.Count-1) then ChangeOptions(Index);
+  end;
+end;
+
+procedure TForm1.ListBox2KeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+if Key in [VK_UP,VK_DOWN,VK_PRIOR,VK_NEXT,VK_LEFT,VK_RIGHT,VK_HOME,VK_END] then
+  ChangeOptions(Form1.ListBox1.ItemIndex);
+end;
+
 
 end.
 

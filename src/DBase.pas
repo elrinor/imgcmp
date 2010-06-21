@@ -150,11 +150,13 @@ begin;
       end
     else
       begin;
-      Img.Destroy;
+      Img.Free;
       raise Exception.Create('BUG!');
       end;
     end
-  else if ((k>-1)and(PResizedImage(Base[PDBasePair(DBaseList[k]).N]).FileSize<>GetFileSize(Files[n]))) then
+  else if (k>-1)and( (PResizedImage(Base[PDBasePair(DBaseList[k]).N]).FileSize<>GetFileSize(Files[n]))or
+                     (PResizedImage(Base[PDBasePair(DBaseList[k]).N]).CropValue<>CropValue)or
+                     ((PResizedImage(Base[PDBasePair(DBaseList[k]).N]).CropValue>0)and(CutFields=False)) ) then
     begin;
     LoadImage(Img,Files[n]);
     ResizeToBase(Img,RI);

@@ -2,7 +2,7 @@ unit Utils;
 
 interface
 uses Globals, Windows, ShellAPI, Forms, SysUtils, Graphics, CheckLst, Controls,
-     Classes, Math;
+     Classes, Math, Debug;
 
 procedure LoadImage(var Img:TBitmap; FileName:String);
 function ExecuteFile(const FileName, Params, DefaultDir: string; ShowCmd: Integer): THandle;
@@ -93,7 +93,7 @@ if n<>-1 then
     Dir:=CheckListBox.Items[n];
     for i:=CheckListBox.Items.Count-1 downto 0 do
       begin;
-      If (i<>n)and(Dir[Length(CheckListBox.Items[i])+1]='\')and(Dir=Copy(CheckListBox.Items[i],1,Length(Dir))) then
+      If (i<>n)and((CheckListBox.Items[i][Length(Dir)+1]='\')or(CheckListBox.Items[i][Length(Dir)]='\'))and(Dir=Copy(CheckListBox.Items[i],1,Length(Dir))) then
         CheckListBox.Items.Delete(i);
       end;
     end;
@@ -142,9 +142,10 @@ end;
 // Execute File
 //============================================================================\\
 function ExecuteFile(const FileName, Params, DefaultDir: string; ShowCmd: Integer): THandle;
-var zFileName, zParams, zDir: array[0..79] of Char;
+//var zFileName, zParams, zDir: array[0..500] of Char;
 begin
-Result := ShellExecute(Application.MainForm.Handle, nil, StrPCopy(zFileName, FileName), StrPCopy(zParams, Params), StrPCopy(zDir, DefaultDir), ShowCmd);
+//Result := ShellExecute(Application.MainForm.Handle, nil, StrPCopy(zFileName, FileName), StrPCopy(zParams, Params), StrPCopy(zDir, DefaultDir), ShowCmd);
+Result := ShellExecute(Application.MainForm.Handle, nil, PChar(FileName), PChar(Params), PChar(DefaultDir), ShowCmd);
 end;
 
 
@@ -194,6 +195,188 @@ if (ext='ICO') then
   end;
 end;
 
+//============================================================================\\
+// Cut Fields
+//============================================================================\\
+procedure DoCutFields(var Img:TBitmap; var ResizedImage:PResizedImage);
+const ww=200;
+      hh=200;
+      minh=32;
+      minw=32;
+      d=3;
+var Rec:TRect;
+    P:PBigByteArray;
+    w,h,x,y,s:Integer;
+    a:array[1..8,1..2]of integer;   {1..l8 of min,max}
+    color:array[0..2]of byte;
+    Top,Bottom,Left,Right:Integer;
+
+Procedure GetS;
+var i:Integer;
+begin;
+  s:=0;
+  for i:=1 to 8 do
+    if a[i,2]-a[i,1]>s then s:=a[i,2]-a[i,1];
+end;
+
+Procedure InitA;
+var i:Integer;
+begin;
+  for i:=1 to 8 do
+    begin;
+    a[i,1]:=1000;
+    a[i,2]:=-1000;
+    end;
+end;
+
+Procedure ChangeA;
+begin;
+    s:=color[0]+color[1]+color[2];
+    if s<a[1,1] then a[1,1]:=s;
+    if s>a[1,2] then a[1,2]:=s;
+
+    s:=color[0]+color[1]-color[2];
+    if s<a[2,1] then a[2,1]:=s;
+    if s>a[2,2] then a[2,2]:=s;
+
+    s:=color[0]-color[1]+color[2];
+    if s<a[3,1] then a[3,1]:=s;
+    if s>a[3,2] then a[3,2]:=s;
+
+    s:=color[0]-color[1]-color[2];
+    if s<a[4,1] then a[4,1]:=s;
+    if s>a[4,2] then a[4,2]:=s;
+
+    s:=color[0]+color[1]+color[2];
+    if s<a[5,1] then a[5,1]:=s;
+    if s>a[5,2] then a[5,2]:=s;
+
+    s:=-color[0]+color[1]-color[2];
+    if s<a[6,1] then a[6,1]:=s;
+    if s>a[6,2] then a[6,2]:=s;
+
+    s:=-color[0]-color[1]+color[2];
+    if s<a[7,1] then a[7,1]:=s;
+    if s>a[7,2] then a[7,2]:=s;
+
+    s:=-color[0]-color[1]-color[2];
+    if s<a[8,1] then a[8,1]:=s;
+    if s>a[8,2] then a[8,2]:=s;
+end;
+
+begin;
+if (Img.Height<=minh)and(Img.Width<=minw) then
+  begin;
+  ResizedImage.Crop[0]:=0;
+  ResizedImage.Crop[1]:=1;
+  ResizedImage.Crop[2]:=0;
+  ResizedImage.Crop[3]:=1;
+  ResizedImage.CropValue:=CropValue;
+  Exit;
+  end;
+If (Img.Height>hh)and(Img.Width>ww) then
+  begin;
+  Rec.Top:=0;
+  Rec.Left:=0;
+  Rec.Bottom:=hh-1;
+  Rec.Right:=ww-1;
+  Img.Canvas.StretchDraw(Rec,Img);
+  Img.Height:=hh;
+  Img.Width:=ww;
+  end;
+FillChar(Rec,SizeOf(Rec),0);
+w:=Img.Width*d; w:=w+(4-w mod 4)mod 4;
+h:=Img.Height-1;
+P:=Img.ScanLine[Img.Height-1];
+//P^[(h-y1)*w+x1*d+0]
+
+//top
+InitA;
+For Top:=0 to Img.Height-Base do
+  begin;
+  For x:=0 to Img.Width-1 do
+    begin;
+    color[0]:=P^[(h-Top)*w+x*d+0];
+    color[1]:=P^[(h-Top)*w+x*d+1];
+    color[2]:=P^[(h-Top)*w+x*d+2];
+    ChangeA;
+    end;
+  GetS;
+  if s>CropValue then Break
+  end;
+
+//Down
+InitA;
+For Bottom:=Img.Height-1 downto Base+Top-1 do
+  begin;
+  For x:=0 to Img.Width-1 do
+    begin;
+    color[0]:=P^[(h-Bottom)*w+x*d+0];
+    color[1]:=P^[(h-Bottom)*w+x*d+1];
+    color[2]:=P^[(h-Bottom)*w+x*d+2];
+    ChangeA;
+    end;
+  GetS;
+  if s>CropValue then Break
+  end;
+
+//Left
+InitA;
+For Left:=0 to Img.Width-Base do
+  begin;
+  For y:=0 to Img.Height-1 do
+    begin;
+    color[0]:=P^[(h-y)*w+Left*d+0];
+    color[1]:=P^[(h-y)*w+Left*d+1];
+    color[2]:=P^[(h-y)*w+Left*d+2];
+    ChangeA;
+    end;
+  GetS;
+  if s>CropValue then Break
+  end;
+
+//Right
+InitA;
+For Right:=Img.Width-1 downto Left+Base-1 do
+  begin;
+  For y:=0 to Img.Height-1 do
+    begin;
+    color[0]:=P^[(h-y)*w+Right*d+0];
+    color[1]:=P^[(h-y)*w+Right*d+1];
+    color[2]:=P^[(h-y)*w+Right*d+2];
+    ChangeA;
+    end;
+  GetS;
+  if s>CropValue then Break
+  end;
+
+//DebugImage(Img);
+If ((Bottom-Top)>Base+2)and((Right-Left)>Base+2) then
+  begin;
+  ResizedImage.Crop[0]:=Top/min(hh-1,Img.Height-1);
+  ResizedImage.Crop[1]:=Bottom/min(hh-1,Img.Height-1);
+  ResizedImage.Crop[2]:=Left/min(ww-1,Img.Width-1);
+  ResizedImage.Crop[3]:=Right/min(ww-1,Img.Width-1);
+  ResizedImage.CropValue:=CropValue;
+
+  Rec.Top:=Top;
+  Rec.Bottom:=Bottom;
+  Rec.Left:=Left;
+  Rec.Right:=Right;
+  Img.Canvas.CopyRect(Rect(0,0,Right-Left+1,Bottom-Top+1),Img.Canvas,Rec);
+  Img.Height:=Bottom-Top+1;
+  Img.Width:=Right-Left+1;
+  //DebugImage(Img);
+  end
+else
+  begin;
+  ResizedImage.Crop[0]:=0;
+  ResizedImage.Crop[1]:=1;
+  ResizedImage.Crop[2]:=0;
+  ResizedImage.Crop[3]:=1;
+  ResizedImage.CropValue:=CropValue;
+  end;
+end;
 
 //============================================================================\\
 // Resize
@@ -213,6 +396,20 @@ if (Img.Height>=10)and(Img.Width>=10) then
   ResizedImage.Width:=Img.Width;
 
   Img.PixelFormat:=pf24bit;
+
+  If CutFields then
+    try
+      DoCutFields(Img,ResizedImage);
+    except
+      on E:Exception do
+        begin;
+        ResizedImage.Crop[0]:=0;
+        ResizedImage.Crop[1]:=1;
+        ResizedImage.Crop[2]:=0;
+        ResizedImage.Crop[3]:=1;
+        ResizedImage.CropValue:=CropValue;
+        end;
+    end;
 
   w:=Img.Width*d; w:=w+(4-w mod 4)mod 4;
   h:=Img.Height-1;

@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 287
-  Top = 169
+  Left = 266
+  Top = 120
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'ImgCmp'
@@ -93,7 +93,7 @@ object Form1: TForm1
     Top = 0
     Width = 713
     Height = 457
-    ActivePage = TabSheet1
+    ActivePage = TabSheet6
     Images = ImageList1
     TabOrder = 0
     object TabSheet1: TTabSheet
@@ -217,380 +217,492 @@ object Form1: TForm1
         OnClick = BitBtn3Click
       end
     end
-    object TabSheet2: TTabSheet
+    object TabSheet6: TTabSheet
       Caption = 'Options'
       ImageIndex = 1
-      object GroupBox1: TGroupBox
-        Left = 0
+      object PageControl2: TPageControl
+        Left = 152
         Top = 0
-        Width = 377
-        Height = 97
-        Caption = 'Garbage'
+        Width = 553
+        Height = 425
+        ActivePage = TabSheet8
+        Style = tsButtons
         TabOrder = 0
-        object Label5: TLabel
-          Left = 80
-          Top = 48
-          Width = 289
-          Height = 17
-          AutoSize = False
-          ParentShowHint = False
-          ShowHint = True
-        end
-        object Label34: TLabel
-          Left = 8
-          Top = 16
-          Width = 361
-          Height = 33
-          AutoSize = False
-          Caption = 
-            'If this option is turned on, deleted files are moved to Garbage ' +
-            'instead of erasing.'
-          WordWrap = True
-        end
-        object BitBtn4: TBitBtn
-          Left = 8
-          Top = 48
-          Width = 65
-          Height = 17
-          Caption = 'Browse...'
-          TabOrder = 0
-          OnClick = BitBtn4Click
-        end
-        object CheckBox1: TCheckBox
-          Left = 8
-          Top = 72
-          Width = 361
-          Height = 17
-          Caption = 'No delete, move to Garbage'
-          Checked = True
-          State = cbChecked
-          TabOrder = 1
-          OnClick = CheckBox1Click
-        end
-      end
-      object GroupBox2: TGroupBox
-        Left = 0
-        Top = 104
-        Width = 377
-        Height = 161
-        Caption = 'Similar images detecting'
-        TabOrder = 1
-        object Label7: TLabel
-          Left = 8
-          Top = 56
-          Width = 361
-          Height = 33
-          AutoSize = False
-          Caption = 
-            'Recommended value = 13-80. But remember, that some of the simila' +
-            'r images may not be found. In this case, use larger values.'
-          WordWrap = True
-        end
-        object Label26: TLabel
-          Left = 8
-          Top = 16
-          Width = 265
-          Height = 17
-          AutoSize = False
-          Caption = 'Maximum difference between similar images:'
-        end
-        object Label27: TLabel
-          Left = 8
-          Top = 96
-          Width = 353
-          Height = 17
-          AutoSize = False
-          Caption = 
-            'Maximum difference between the (Height/Width) value of similar i' +
-            'mages:'
-        end
-        object Label28: TLabel
-          Left = 90
-          Top = 115
-          Width = 41
-          Height = 17
-          AutoSize = False
-          Caption = '%'
-        end
-        object Label29: TLabel
-          Left = 8
-          Top = 136
-          Width = 193
-          Height = 17
-          AutoSize = False
-          Caption = 'Recommended value = 10-20 %'
-        end
-        object SpinEdit1: TSpinEdit
-          Left = 8
-          Top = 32
-          Width = 81
-          Height = 22
-          MaxLength = 3
-          MaxValue = 500
-          MinValue = 0
-          TabOrder = 0
-          Value = 0
-          OnChange = SpinEdit1Change
-          OnExit = SpinEdit1Exit
-        end
-        object SpinEdit2: TSpinEdit
-          Left = 8
-          Top = 112
-          Width = 81
-          Height = 22
-          MaxLength = 4
-          MaxValue = 1000
-          MinValue = 0
-          TabOrder = 1
-          Value = 0
-          OnChange = SpinEdit2Change
-          OnExit = SpinEdit2Exit
-        end
-      end
-      object GroupBox8: TGroupBox
-        Left = 0
-        Top = 272
-        Width = 377
-        Height = 153
-        Caption = 'DataBase AutoSaving'
-        TabOrder = 2
-        object Label30: TLabel
-          Left = 8
-          Top = 88
-          Width = 129
-          Height = 17
-          AutoSize = False
-          Caption = 'AutoSave DataBase every '
-        end
-        object Label31: TLabel
-          Left = 212
-          Top = 88
-          Width = 113
-          Height = 17
-          AutoSize = False
-          Caption = 'iterations.'
-        end
-        object Label32: TLabel
-          Left = 8
-          Top = 112
-          Width = 361
-          Height = 33
-          AutoSize = False
-          Caption = 
-            'Recommended value = 300-1000. DataBase AutoSaving is resource-co' +
-            'nsuming, so don'#39't use very small values.'
-          WordWrap = True
-        end
-        object Label33: TLabel
-          Left = 8
-          Top = 16
-          Width = 361
-          Height = 41
-          AutoSize = False
-          Caption = 
-            'DataBase AutoSaving saves processed images in the DataBase while' +
-            ' process is in progress. That saves you from reprocessing everyt' +
-            'hing if an error would occur.'
-          WordWrap = True
-        end
-        object SpinEdit3: TSpinEdit
-          Left = 136
-          Top = 85
-          Width = 73
-          Height = 22
-          MaxLength = 5
-          MaxValue = 10000
-          MinValue = 10
-          TabOrder = 0
-          Value = 10
-          OnChange = SpinEdit3Change
-          OnExit = SpinEdit3Exit
-        end
-        object CheckBox2: TCheckBox
-          Left = 8
-          Top = 64
-          Width = 361
-          Height = 17
-          Caption = 'Allow DataBase AutoSaving'
-          Checked = True
-          State = cbChecked
-          TabOrder = 1
-          OnClick = CheckBox2Click
-        end
-      end
-      object GroupBox9: TGroupBox
-        Left = 384
-        Top = 0
-        Width = 321
-        Height = 265
-        Caption = 'Rating Rules'
-        TabOrder = 3
-        object RadioGroup1: TRadioGroup
-          Left = 8
-          Top = 16
-          Width = 305
-          Height = 57
-          Caption = 'File Size'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ItemIndex = 0
-          Items.Strings = (
-            'Bigger Size = Better File'
-            'Smaller Size = Better File')
-          ParentFont = False
-          TabOrder = 0
-          OnClick = RadioGroup1Click
-        end
-        object RadioGroup2: TRadioGroup
-          Left = 8
-          Top = 80
-          Width = 305
-          Height = 57
-          Caption = 'Resolution'
-          ItemIndex = 0
-          Items.Strings = (
-            'Bigger Resolution = Better File'
-            'Smaller Resolution = Better File')
-          TabOrder = 1
-          OnClick = RadioGroup2Click
-        end
-        object GroupBox10: TGroupBox
-          Left = 8
-          Top = 144
-          Width = 305
-          Height = 113
-          Caption = 'Resolution and FileSize affect of File Rating'
-          TabOrder = 2
-          object Label35: TLabel
+        object TabSheet7: TTabSheet
+          Caption = 'General'
+          object Label7: TLabel
             Left = 8
             Top = 16
-            Width = 57
+            Width = 537
             Height = 17
             AutoSize = False
-            Caption = 'Resolution'
+            Caption = 
+              'If this option is turned on, then before comparing image'#39's field' +
+              's are cropped, if they are colored uniformly.'
           end
-          object Label36: TLabel
-            Left = 192
-            Top = 16
-            Width = 105
-            Height = 17
-            Alignment = taRightJustify
-            AutoSize = False
-            Caption = 'File Size'
-          end
-          object Label37: TLabel
+          object Label26: TLabel
             Left = 8
-            Top = 56
-            Width = 289
+            Top = 51
+            Width = 75
+            Height = 13
+            Caption = 'Process Priority:'
+          end
+          object Label27: TLabel
+            Left = 320
+            Top = 51
+            Width = 225
+            Height = 14
+            AutoSize = False
+            Caption = 'Current Priority: '
+          end
+          object Label28: TLabel
+            Left = 8
+            Top = 72
+            Width = 537
+            Height = 17
+            AutoSize = False
+            Caption = 'Recommended value = IDLE'
+          end
+          object CheckBox1: TCheckBox
+            Left = 8
+            Top = 0
+            Width = 121
+            Height = 17
+            Caption = 'Cut Fields'
+            Checked = True
+            State = cbChecked
+            TabOrder = 0
+            OnClick = CheckBox1Click
+          end
+          object ComboBox1: TComboBox
+            Left = 88
+            Top = 48
+            Width = 129
+            Height = 21
+            Style = csDropDownList
+            ItemHeight = 13
+            TabOrder = 1
+            Items.Strings = (
+              'IDLE'
+              'NORMAL'
+              'HIGH')
+          end
+          object BitBtn4: TBitBtn
+            Left = 224
+            Top = 48
+            Width = 81
+            Height = 21
+            Caption = 'Apply'
+            Default = True
+            ModalResult = 1
+            TabOrder = 2
+            OnClick = BitBtn4Click
+            Glyph.Data = {
+              06030000424D06030000000000003600000028000000100000000F0000000100
+              180000000000D0020000120B0000120B00000000000000000000008080008080
+              0080800080808000008000000080800080800080800080800080800080800080
+              8000808000808000808000808000808000808080000000800000800080000000
+              8080008080008080008080008080008080008080008080008080008080008080
+              8000000080000080000080000080008000000080800080800080800080800080
+              8000808000808000808000808080000000800000800000800000800000800000
+              8000800000008080008080008080008080008080008080008080800000008000
+              00800000800000FF000080000080000080000080008000000080800080800080
+              8000808000808000808000800000800000800000FF0000808000FF0000800000
+              800000800080000000808000808000808000808000808000808000FF00008000
+              00FF0000808000808000808000FF000080000080000080008000000080800080
+              8000808000808000808000808000FF0000808000808000808000808000808000
+              FF00008000008000008000800000008080008080008080008080008080008080
+              00808000808000808000808000808000808000FF000080000080000080008000
+              0000808000808000808000808000808000808000808000808000808000808000
+              808000808000FF00008000008000008000800000008080008080008080008080
+              00808000808000808000808000808000808000808000808000FF000080000080
+              0000800080000000808000808000808000808000808000808000808000808000
+              808000808000808000808000FF00008000008000008000800000008080008080
+              00808000808000808000808000808000808000808000808000808000808000FF
+              0000800000800080000000808000808000808000808000808000808000808000
+              808000808000808000808000808000808000FF00008000008000008080008080
+              0080800080800080800080800080800080800080800080800080800080800080
+              8000808000FF00008080}
+          end
+        end
+        object TabSheet8: TTabSheet
+          Caption = 'Database'
+          ImageIndex = 1
+          object Label48: TLabel
+            Left = 8
+            Top = 0
+            Width = 537
             Height = 33
             AutoSize = False
             Caption = 
-              'That option represents the ratio between the affects of Resoluti' +
-              'on and File Size on the File Rating.'
+              'DataBase AutoSaving saves processed images in the DataBase while' +
+              ' process is in progress. That saves you from reprocessing everyt' +
+              'hing if an error would occur.'
             WordWrap = True
           end
-          object Label38: TLabel
+          object Label49: TLabel
             Left = 8
-            Top = 88
-            Width = 133
-            Height = 13
-            Caption = 'Recommended value = 50%'
+            Top = 56
+            Width = 129
+            Height = 17
+            AutoSize = False
+            Caption = 'AutoSave DataBase every '
           end
-          object TrackBar1: TTrackBar
+          object Label50: TLabel
+            Left = 212
+            Top = 56
+            Width = 113
+            Height = 17
+            AutoSize = False
+            Caption = 'iterations.'
+          end
+          object Label51: TLabel
+            Left = 8
+            Top = 80
+            Width = 537
+            Height = 17
+            AutoSize = False
+            Caption = 
+              'Recommended value = 300-1000. DataBase AutoSaving is resource-co' +
+              'nsuming, so don'#39't use very small values.'
+            WordWrap = True
+          end
+          object Label52: TLabel
+            Left = 8
+            Top = 104
+            Width = 537
+            Height = 17
+            AutoSize = False
+            Caption = 
+              'DataBase optimization decreases the size of DataBase by removing' +
+              ' the non-existing images from it.'
+            WordWrap = True
+          end
+          object Label53: TLabel
+            Left = 8
+            Top = 152
+            Width = 44
+            Height = 13
+            Caption = 'Progress:'
+          end
+          object Gauge6: TGauge
+            Left = 8
+            Top = 168
+            Width = 537
+            Height = 17
+            Progress = 0
+          end
+          object Label54: TLabel
+            Left = 8
+            Top = 192
+            Width = 537
+            Height = 15
+            AutoSize = False
+            Caption = 'DataBase Size: '
+          end
+          object CheckBox4: TCheckBox
             Left = 8
             Top = 32
-            Width = 289
-            Height = 25
-            Orientation = trHorizontal
-            Frequency = 1
-            Position = 5
-            SelEnd = 0
-            SelStart = 0
+            Width = 361
+            Height = 17
+            Caption = 'Allow DataBase AutoSaving'
+            Checked = True
+            State = cbChecked
             TabOrder = 0
-            TickMarks = tmBottomRight
-            TickStyle = tsAuto
-            OnChange = TrackBar1Change
+            OnClick = CheckBox4Click
+          end
+          object SpinEdit4: TSpinEdit
+            Left = 136
+            Top = 53
+            Width = 73
+            Height = 22
+            MaxLength = 5
+            MaxValue = 10000
+            MinValue = 10
+            TabOrder = 1
+            Value = 10
+            OnChange = SpinEdit3Change
+            OnExit = SpinEdit3Exit
+          end
+          object BitBtn13: TBitBtn
+            Left = 8
+            Top = 120
+            Width = 137
+            Height = 25
+            Caption = 'Optimize DataBase'
+            TabOrder = 2
+            OnClick = BitBtn10Click
+            Glyph.Data = {
+              36030000424D3603000000000000360000002800000010000000100000000100
+              18000000000000030000C40E0000C40E00000000000000000000C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0000000000000000000000000000000000000C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C000000080808080808080
+              8080808080808080808080000000C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0000000808080808080808080808080808080808080000000C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C000000080808080808080808000
+              0000000000808080808080808080000000C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0000000808080808080000000C0C0C0C0C0C00000008080808080800000
+              00C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0000000808080808080000000C0C0C0C0
+              C0C0C0C0C0C0C0C0000000808080808080000000C0C0C0C0C0C0C0C0C0C0C0C0
+              000000808080808080000000C0C0C0C0C0C0C0C0C0C0C0C00000008080808080
+              80000000C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0000000808080808080000000C0
+              C0C0C0C0C0000000808080808080000000C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C00000008080808080808080800000000000008080808080808080800000
+              00C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C000000080808080808080
+              8080808080808080808080000000C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0000000808080808080808080808080808080808080000000C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C000000000000000
+              0000000000000000000000C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
+              C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0}
+          end
+        end
+        object TabSheet9: TTabSheet
+          Caption = 'Garbage'
+          ImageIndex = 2
+          object Label46: TLabel
+            Left = 8
+            Top = 24
+            Width = 537
+            Height = 17
+            AutoSize = False
+            Caption = 
+              'If this option is turned on, deleted files are moved to Garbage ' +
+              'instead of being erased.'
+            WordWrap = True
+          end
+          object Label47: TLabel
+            Left = 80
+            Top = 40
+            Width = 465
+            Height = 17
+            AutoSize = False
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object BitBtn12: TBitBtn
+            Left = 8
+            Top = 40
+            Width = 65
+            Height = 17
+            Caption = 'Browse...'
+            TabOrder = 0
+            OnClick = BitBtn12Click
+          end
+          object CheckBox3: TCheckBox
+            Left = 8
+            Top = 0
+            Width = 361
+            Height = 17
+            Caption = 'No delete, move to Garbage'
+            Checked = True
+            State = cbChecked
+            TabOrder = 1
+            OnClick = CheckBox3Click
+          end
+        end
+        object TabSheet10: TTabSheet
+          Caption = 'Similar Images Detecting'
+          ImageIndex = 3
+          object Label55: TLabel
+            Left = 8
+            Top = 0
+            Width = 265
+            Height = 17
+            AutoSize = False
+            Caption = 'Maximum difference between similar images:'
+          end
+          object Label56: TLabel
+            Left = 8
+            Top = 40
+            Width = 537
+            Height = 33
+            AutoSize = False
+            Caption = 
+              'Recommended value = 13-80. But remember, that some of the simila' +
+              'r images may not be found. In this case, use larger values.'
+            WordWrap = True
+          end
+          object Label57: TLabel
+            Left = 8
+            Top = 80
+            Width = 353
+            Height = 17
+            AutoSize = False
+            Caption = 
+              'Maximum difference between the (Height/Width) value of similar i' +
+              'mages:'
+          end
+          object Label58: TLabel
+            Left = 8
+            Top = 120
+            Width = 193
+            Height = 17
+            AutoSize = False
+            Caption = 'Recommended value = 10-20 %'
+          end
+          object SpinEdit5: TSpinEdit
+            Left = 8
+            Top = 16
+            Width = 81
+            Height = 22
+            MaxLength = 3
+            MaxValue = 500
+            MinValue = 0
+            TabOrder = 0
+            Value = 0
+            OnChange = SpinEdit1Change
+            OnExit = SpinEdit1Exit
+          end
+          object SpinEdit6: TSpinEdit
+            Left = 8
+            Top = 96
+            Width = 81
+            Height = 22
+            MaxLength = 4
+            MaxValue = 1000
+            MinValue = 0
+            TabOrder = 1
+            Value = 0
+            OnChange = SpinEdit2Change
+            OnExit = SpinEdit2Exit
+          end
+        end
+        object TabSheet11: TTabSheet
+          Caption = 'Rating Rules'
+          ImageIndex = 4
+          object GroupBox13: TGroupBox
+            Left = 8
+            Top = 128
+            Width = 537
+            Height = 89
+            Caption = 'Resolution and FileSize affect of File Rating'
+            TabOrder = 0
+            object Label59: TLabel
+              Left = 8
+              Top = 16
+              Width = 57
+              Height = 17
+              AutoSize = False
+              Caption = 'Resolution'
+            end
+            object Label60: TLabel
+              Left = 416
+              Top = 16
+              Width = 105
+              Height = 17
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = 'File Size'
+            end
+            object Label61: TLabel
+              Left = 8
+              Top = 56
+              Width = 521
+              Height = 17
+              AutoSize = False
+              Caption = 
+                'That option represents the ratio between the affects of Resoluti' +
+                'on and File Size on the File Rating.'
+              WordWrap = True
+            end
+            object Label62: TLabel
+              Left = 8
+              Top = 72
+              Width = 133
+              Height = 13
+              Caption = 'Recommended value = 50%'
+            end
+            object TrackBar2: TTrackBar
+              Left = 8
+              Top = 32
+              Width = 521
+              Height = 25
+              Orientation = trHorizontal
+              Frequency = 1
+              Position = 5
+              SelEnd = 0
+              SelStart = 0
+              TabOrder = 0
+              TickMarks = tmBottomRight
+              TickStyle = tsAuto
+              OnChange = TrackBar1Change
+            end
+          end
+          object RadioGroup3: TRadioGroup
+            Left = 8
+            Top = 64
+            Width = 537
+            Height = 57
+            Caption = 'Resolution'
+            ItemIndex = 0
+            Items.Strings = (
+              'Bigger Resolution = Better File'
+              'Smaller Resolution = Better File')
+            TabOrder = 1
+            OnClick = RadioGroup2Click
+          end
+          object RadioGroup4: TRadioGroup
+            Left = 8
+            Top = 0
+            Width = 537
+            Height = 57
+            Caption = 'File Size'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ItemIndex = 0
+            Items.Strings = (
+              'Bigger Size = Better File'
+              'Smaller Size = Better File')
+            ParentFont = False
+            TabOrder = 2
+            OnClick = RadioGroup1Click
           end
         end
       end
-      object GroupBox11: TGroupBox
-        Left = 384
-        Top = 272
-        Width = 321
-        Height = 153
-        Caption = 'DataBase Optimizaton'
-        TabOrder = 4
-        object Label39: TLabel
+      object ListBox2: TListBox
+        Left = 0
+        Top = 0
+        Width = 153
+        Height = 425
+        ExtendedSelect = False
+        ItemHeight = 13
+        Items.Strings = (
+          'General'
+          'Database'
+          'Garbage'
+          'Similar Images Detecting'
+          'Rating Rules')
+        TabOrder = 1
+        OnKeyUp = ListBox2KeyUp
+        OnMouseUp = ListBox2MouseUp
+      end
+      object Panel2: TPanel
+        Left = 154
+        Top = 0
+        Width = 889
+        Height = 25
+        BevelOuter = bvNone
+        TabOrder = 2
+        object Label5: TLabel
           Left = 8
-          Top = 16
-          Width = 305
-          Height = 33
-          AutoSize = False
-          Caption = 
-            'DataBase optimization decreases the size of DataBase by removing' +
-            ' the non-existing images from it.'
-          WordWrap = True
-        end
-        object Gauge5: TGauge
-          Left = 8
-          Top = 96
-          Width = 305
-          Height = 17
-          Progress = 0
-        end
-        object Label40: TLabel
-          Left = 8
-          Top = 80
-          Width = 44
-          Height = 13
-          Caption = 'Progress:'
-        end
-        object Label41: TLabel
-          Left = 8
-          Top = 128
-          Width = 305
-          Height = 15
-          AutoSize = False
-          Caption = 'DataBase Size: '
-        end
-        object BitBtn10: TBitBtn
-          Left = 8
-          Top = 48
-          Width = 137
+          Top = 0
+          Width = 545
           Height = 25
-          Caption = 'Optimize DataBase'
-          TabOrder = 0
-          OnClick = BitBtn10Click
-          Glyph.Data = {
-            36030000424D3603000000000000360000002800000010000000100000000100
-            18000000000000030000C40E0000C40E00000000000000000000C0C0C0C0C0C0
-            C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-            C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-            C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-            C0C0C0C0C0C0C0C0C0000000000000000000000000000000000000C0C0C0C0C0
-            C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C000000080808080808080
-            8080808080808080808080000000C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-            C0C0C0C0C0C0000000808080808080808080808080808080808080000000C0C0
-            C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C000000080808080808080808000
-            0000000000808080808080808080000000C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-            C0C0C0000000808080808080000000C0C0C0C0C0C00000008080808080800000
-            00C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0000000808080808080000000C0C0C0C0
-            C0C0C0C0C0C0C0C0000000808080808080000000C0C0C0C0C0C0C0C0C0C0C0C0
-            000000808080808080000000C0C0C0C0C0C0C0C0C0C0C0C00000008080808080
-            80000000C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0000000808080808080000000C0
-            C0C0C0C0C0000000808080808080000000C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-            C0C0C00000008080808080808080800000000000008080808080808080800000
-            00C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C000000080808080808080
-            8080808080808080808080000000C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-            C0C0C0C0C0C0000000808080808080808080808080808080808080000000C0C0
-            C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C000000000000000
-            0000000000000000000000C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-            C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-            C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0
-            C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0}
+          AutoSize = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -16
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          ParentFont = False
         end
       end
     end
@@ -7266,9 +7378,9 @@ object Form1: TForm1
         object Label45: TLabel
           Left = 448
           Top = 88
-          Width = 54
+          Width = 33
           Height = 13
-          Caption = 'v 1.4.0.735'
+          Caption = 'v 1.5.0'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWhite
           Font.Height = -11
@@ -7288,8 +7400,8 @@ object Form1: TForm1
       000000008000008000000080800080000000800080008080000080808000C0C0
       C0000000FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF000000
       0000000000000888888888888880088888888888888008888888888888800888
-      8888888888800880870078777070088080880880000008808088088700700880
-      8088070708800870808800007780088087007707808008888888888888800888
+      8888888888800888888888888880088888888888888008888888888888800888
+      8888888888800888888888888880088888888888888008888888888888800888
       8888888888800888888888888880088888888888888000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000}
@@ -7297,7 +7409,6 @@ object Form1: TForm1
     IconIndex = 0
     MinimizeToTray = True
     OnDblClick = TextTrayIcon1DblClick
-    Text = '10%'
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -8
